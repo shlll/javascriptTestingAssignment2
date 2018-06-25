@@ -1,46 +1,42 @@
-class Shoppingcart {
-    constructor(goods) {
-        this.goods = {};
+class ShoppingCart {
+    constructor() {
+        this.cartItems = [];
+        this.cartDiscount = 0;
     }
     scan(product) {
-        let goods = [
-            appleJuice = {
-                itemId: 23,
-                price: 5.00,
-            },
-            beer = {
-                itemId: 20,
-                price: 5.00,
-            },
-            apple = {
-                itemId: 280,
-                price: 2.00,
-            }
-        ]
-        if (this.goods.length > 5) {
-            return "Your cart is full.";
+        if (this.cartItems.length > 4) {
+            return "Your cart is full."
         } else {
-            this.goods.push(product);
+            this.cartItems.push(product);
         }
     }
     remove(product) {
-        if (this.goods.length < 0) {
-            return "Your cart is empty.";
+        if (this.cartItems.length > 0) {
+            const itemIndex = this.cartItems.findIndex((item) => item.itemId === product.itemId)
+            this.cartItems.splice(itemIndex, 1)
         } else {
-            delete this.product;
+            return "Your cart is empty.";
         }
+
     }
     discount(percentage) {
-        if (percentage > 0.5) {
-            return "The discount of the items is 0.5";
-        } else {
-            return percentage;
+        if(percentage <= 50){
+            this.cartDiscount = percentage / 100;
+        }else{
+            this.cartDiscount = 0.50
         }
-    }
-    total() {
-        return this.goods;
+        
     }
     items() {
-        return this.product;
+        return this.cartItems;
+    }
+    total() {
+        let total = 0;
+
+        for (const item of this.cartItems) {
+            total += item.price;
+        }
+        let totalDiscount = total * this.cartDiscount
+        return total - totalDiscount
     }
 }

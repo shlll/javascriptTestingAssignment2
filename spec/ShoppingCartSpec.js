@@ -1,28 +1,57 @@
-describe("Shoppingcart", () => {
-   it("should only allow 5 items in the cart", () => {
-        const shoppingcart = new Shoppingcart([]);
-        shoppingcart.scan("appleJuice")
-        shoppingcart.scan("beer")
-        shoppingcart.scan("apple")
-        shoppingcart.scan("cake")
-        shoppingcart.scan("water")
-        expect(shoppingcart.scan("pie")).toBe("Your cart is full.")
+describe("Shopping Cart", () => {
+    it("should be able to add items to the cart", () => {
+        const shoppingCart = new ShoppingCart();
+        const cheese = {
+            itemId: 4,
+            price: 11.00
+        }
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        expect(shoppingCart.items()).toEqual([cheese, cheese])
     })
-    it("should not remove items from an empty cart", () => {
-        const shoppingcart = new Shoppingcart();
-        expect(shoppingcart.remove()).toBe("Your cart is empty.")
+    it("should limit the cart to 5 items", () => {
+        const shoppingCart = new ShoppingCart();
+        const cheese = {
+            itemId: 4,
+            price: 11.00
+        }
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        expect(shoppingCart.scan(cheese)).toBe("Your cart is full.")
+        expect(shoppingCart.items()).toEqual([cheese, cheese, cheese, cheese, cheese]);
     })
-    it("should  discount items less than 50%", () => {
-        const shoppingcart = new Shoppingcart();
-        expect(shoppingcart.discount(0.2)).toBe(0.5);
-        expect(shoppingcart.discount(0.3)).toBe(0.5);
+    it("Should be able to remove items from the cart", () => {
+        const shoppingCart = new ShoppingCart();
+        const cheese = {
+            itemId: 4,
+            price: 11.00
+        }
+        const crackers = {
+            itemId: 5,
+            price: 12.00
+        }
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(crackers)
+        shoppingCart.remove(4);
+        expect(shoppingCart.items()).toEqual([crackers]);
     })
-    it("should list all of the items in the cart", () => {
-        const shoppingcart = new Shoppingcart(["appleJuice","beer","apple"]);
-        expect(shoppingcart.total()).toBe(["appleJuice","beer","apple"]);
+    it("Should be able to remove items from an empty cart", () => {
+        const shoppingCart = new ShoppingCart();
+        expect(shoppingCart.remove(4)).toBe("Your cart is empty.")
     })
-    it("should return the current items in the cart", () => {
-        const shoppingcart = new Shoppingcart();
-        expect(shoppingcart.items()).toBe();
+    it("Should calculate the total of all the items in the cart", () => {
+        const shoppingCart = new ShoppingCart();
+        const cheese = {
+            itemId: 4,
+            price: 10.00
+        }
+        shoppingCart.scan(cheese)
+        shoppingCart.scan(cheese)
+        
+        expect(shoppingCart.total()).toBe(20.00);
     })
+
 })
